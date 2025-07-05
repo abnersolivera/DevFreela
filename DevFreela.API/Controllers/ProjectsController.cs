@@ -15,7 +15,7 @@ public class ProjectsController : ControllerBase
     }
     
     [HttpGet]
-    public IActionResult Get(string search = "", int page = 1, int size = 3)
+    public IActionResult Get(string search = "", int page = 0, int size = 3)
     {
         var result = _service.GetAll(search, page, size);
         return Ok(result);

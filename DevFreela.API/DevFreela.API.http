@@ -92,6 +92,18 @@ Content-Type: application/json
 Accept: application/json
 
 {
+  "fullName": "Abner Oliveira",
+  "email": "abner@email.com",
+  "birthDate": "1997-02-16T00:00:00"
+}
+
+###
+
+POST {{HostAddress}}/api/Users
+Content-Type: application/json
+Accept: application/json
+
+{
   "fullName": "João Silva Oliveira",
   "email": "joao_ol@email.com",
   "birthDate": "1990-05-01T00:00:00"
@@ -104,9 +116,9 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "fullName": "Abner Oliveira",
-  "email": "abner@email.com",
-  "birthDate": "1997-02-16T00:00:00"
+  "fullName": "Stéffany Oliveira",
+  "email": "ste@email.com",
+  "birthDate": "1999-02-24T00:00:00"
 }
 
 ###

@@ -15,7 +15,7 @@ public class ProjectService : IProjectService
     }
 
     
-    public ResultViewModel<List<ProjectItemViewModel>> GetAll(string search = "", int page = 1, int size = 3)
+    public ResultViewModel<List<ProjectItemViewModel>> GetAll(string search = "", int page = 0, int size = 3)
     {
         var projects = _dbContext.Projects
             .Include(p => p.Client)
@@ -125,7 +125,7 @@ public class ProjectService : IProjectService
         
         var comment = new ProjectComment(inputModel.Content, inputModel.IdProject, inputModel.IdUser);
         
-        project.Comments.Add(comment);
+        _dbContext.ProjectComments.Add(comment);
         _dbContext.SaveChanges();
         return ResultViewModel.Success();
     }
