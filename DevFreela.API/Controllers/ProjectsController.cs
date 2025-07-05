@@ -3,7 +3,6 @@ using DevFreela.API.Models;
 using DevFreela.API.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace DevFreela.API.Controllers;
 
