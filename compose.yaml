@@ -1,0 +1,32 @@
+﻿services:
+  devfreela.api:
+    networks:
+        - devfreela-network
+    
+    depends_on:
+      - "sql-server"
+          
+    ports:
+        - "5000:5000"
+    environment:
+      ASPNETCORE_URLS: "http://+:5000"
+    image: devfreela.api
+    build:
+      context: .
+      dockerfile: DevFreela.API/Dockerfile
+      
+  sql-server:
+    networks:
+        - devfreela-network
+    restart: always
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=DevFreela2023!
+    ports:
+      - "1433:1433"
+    volumes:
+      - ../volumes/mssql_data:/var/opt/mssql/data
+networks:
+  devfreela-network:
+    driver: bridge

@@ -1,0 +1,131 @@
+@HostAddress = http://localhost:5000
+
+GET {{HostAddress}}/api/Projects
+Accept: application/json
+###
+
+GET {{HostAddress}}/api/Projects?search=Desenvolvimento
+Accept: application/json
+###
+
+POST {{HostAddress}}/api/Projects
+Content-Type: application/json
+Accept: application/json
+
+{
+  "title": "Pojeto de Desenvolvimento",
+  "description": "Desenvolvimento de um sistema web",
+  "idClient": 1,
+  "idFreelancer": 2,
+  "totalCost": 5000.0
+}
+
+###
+
+GET {{HostAddress}}/api/Projects/1
+Accept: application/json
+
+###
+
+PUT {{HostAddress}}/api/Projects/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "idProject": 1,
+  "title": "Título Atualizado",
+  "description": "Nova descrição",
+  "totalCost": 6000.0
+}
+
+###
+
+DELETE {{HostAddress}}/api/Projects/1
+Accept: application/json
+
+###
+
+PUT {{HostAddress}}/api/Projects/1/start
+Accept: application/json
+
+###
+
+PUT {{HostAddress}}/api/Projects/1/complete
+Accept: application/json
+
+###
+
+POST {{HostAddress}}/api/Projects/1/comments
+Content-Type: application/json
+Accept: application/json
+
+{
+  "content": "Muito bom o progresso!",
+  "idUser": 3,
+  "idProject": 1
+}
+
+###
+
+GET {{HostAddress}}/api/Skills
+Accept: application/json
+
+###
+
+POST {{HostAddress}}/api/Skills
+Content-Type: application/json
+Accept: application/json
+
+{
+  "description": "C#"
+}
+
+###
+
+GET {{HostAddress}}/api/Users/1
+Accept: application/json
+
+###
+
+POST {{HostAddress}}/api/Users
+Content-Type: application/json
+Accept: application/json
+
+{
+  "fullName": "João Silva Oliveira",
+  "email": "joao_ol@email.com",
+  "birthDate": "1990-05-01T00:00:00"
+}
+
+###
+
+POST {{HostAddress}}/api/Users
+Content-Type: application/json
+Accept: application/json
+
+{
+  "fullName": "Abner Oliveira",
+  "email": "abner@email.com",
+  "birthDate": "1997-02-16T00:00:00"
+}
+
+###
+
+PUT {{HostAddress}}/api/Users/1/skills
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": 1,
+  "skillIds": [1]
+}
+
+###
+
+PUT {{HostAddress}}/api/Users/1/profile-picture
+Content-Type: multipart/form-data
+Accept: application/json
+
+(file deve ser enviado como binary)
+
+###
