@@ -64,6 +64,9 @@ public class DevFreelaDbContext : DbContext
                 .WithMany(c => c.OwnedProjects)
                 .HasForeignKey(p => p.IdClient)
                 .OnDelete(DeleteBehavior.Restrict);
+            
+            e.Property(p => p.TotalCost)
+                .HasPrecision(18, 2);
         });
         
         base.OnModelCreating(builder);

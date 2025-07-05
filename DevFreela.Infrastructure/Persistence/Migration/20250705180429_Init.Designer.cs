@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DevFreela.Infrastructure.Migrations
+namespace DevFreela.Infrastructure.Persistence.Migration
 {
     [DbContext(typeof(DevFreelaDbContext))]
-    [Migration("20250705140856_Initial")]
-    partial class Initial
+    [Migration("20250705180429_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace DevFreela.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DevFreela.API.Entities.Project", b =>
+            modelBuilder.Entity("DevFreela.Core.Entities.Project", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,6 +63,7 @@ namespace DevFreela.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalCost")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -77,7 +78,7 @@ namespace DevFreela.Infrastructure.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("DevFreela.API.Entities.ProjectComment", b =>
+            modelBuilder.Entity("DevFreela.Core.Entities.ProjectComment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -116,7 +117,7 @@ namespace DevFreela.Infrastructure.Migrations
                     b.ToTable("ProjectComments");
                 });
 
-            modelBuilder.Entity("DevFreela.API.Entities.Skill", b =>
+            modelBuilder.Entity("DevFreela.Core.Entities.Skill", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -142,7 +143,7 @@ namespace DevFreela.Infrastructure.Migrations
                     b.ToTable("Skills");
                 });
 
-            modelBuilder.Entity("DevFreela.API.Entities.User", b =>
+            modelBuilder.Entity("DevFreela.Core.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -178,7 +179,7 @@ namespace DevFreela.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DevFreela.API.Entities.UserSkill", b =>
+            modelBuilder.Entity("DevFreela.Core.Entities.UserSkill", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -210,15 +211,15 @@ namespace DevFreela.Infrastructure.Migrations
                     b.ToTable("UserSkills");
                 });
 
-            modelBuilder.Entity("DevFreela.API.Entities.Project", b =>
+            modelBuilder.Entity("DevFreela.Core.Entities.Project", b =>
                 {
-                    b.HasOne("DevFreela.API.Entities.User", "Client")
+                    b.HasOne("DevFreela.Core.Entities.User", "Client")
                         .WithMany("OwnedProjects")
                         .HasForeignKey("IdClient")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("DevFreela.API.Entities.User", "Freelancer")
+                    b.HasOne("DevFreela.Core.Entities.User", "Freelancer")
                         .WithMany("FreelanceProjects")
                         .HasForeignKey("IdFreelancer")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -229,15 +230,15 @@ namespace DevFreela.Infrastructure.Migrations
                     b.Navigation("Freelancer");
                 });
 
-            modelBuilder.Entity("DevFreela.API.Entities.ProjectComment", b =>
+            modelBuilder.Entity("DevFreela.Core.Entities.ProjectComment", b =>
                 {
-                    b.HasOne("DevFreela.API.Entities.Project", "Project")
+                    b.HasOne("DevFreela.Core.Entities.Project", "Project")
                         .WithMany("Comments")
                         .HasForeignKey("IdProject")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("DevFreela.API.Entities.User", "User")
+                    b.HasOne("DevFreela.Core.Entities.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -248,15 +249,15 @@ namespace DevFreela.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DevFreela.API.Entities.UserSkill", b =>
+            modelBuilder.Entity("DevFreela.Core.Entities.UserSkill", b =>
                 {
-                    b.HasOne("DevFreela.API.Entities.Skill", "Skill")
+                    b.HasOne("DevFreela.Core.Entities.Skill", "Skill")
                         .WithMany("UserSkills")
                         .HasForeignKey("IdSkill")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("DevFreela.API.Entities.User", "User")
+                    b.HasOne("DevFreela.Core.Entities.User", "User")
                         .WithMany("Skills")
                         .HasForeignKey("IdUser")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -267,17 +268,17 @@ namespace DevFreela.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DevFreela.API.Entities.Project", b =>
+            modelBuilder.Entity("DevFreela.Core.Entities.Project", b =>
                 {
                     b.Navigation("Comments");
                 });
 
-            modelBuilder.Entity("DevFreela.API.Entities.Skill", b =>
+            modelBuilder.Entity("DevFreela.Core.Entities.Skill", b =>
                 {
                     b.Navigation("UserSkills");
                 });
 
-            modelBuilder.Entity("DevFreela.API.Entities.User", b =>
+            modelBuilder.Entity("DevFreela.Core.Entities.User", b =>
                 {
                     b.Navigation("Comments");
 
