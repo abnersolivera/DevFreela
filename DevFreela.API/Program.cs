@@ -1,5 +1,5 @@
 using DevFreela.API.ExceptionHandler;
-using DevFreela.Application.Models;
+using DevFreela.Application;
 using DevFreela.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +8,8 @@ builder.Services.AddExceptionHandler<ApiExceptionHandler>();
 
 builder.Services.AddDbContext<DevFreelaDbContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
+
+builder.Services.AddApplication();
 
 builder.Services.AddProblemDetails();
 builder.Services.AddControllers();
