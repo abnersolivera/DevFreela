@@ -1,5 +1,12 @@
-using DevFreela.Application.Models;
-using DevFreela.Application.Services;
+using DevFreela.Application.Commands.CompleteProject;
+using DevFreela.Application.Commands.DeleteProject;
+using DevFreela.Application.Commands.InsertComment;
+using DevFreela.Application.Commands.InsertProject;
+using DevFreela.Application.Commands.StartProject;
+using DevFreela.Application.Commands.UpdateProject;
+using DevFreela.Application.Queries.GetAllProjects;
+using DevFreela.Application.Queries.GetProjectById;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevFreela.API.Controllers;
@@ -8,23 +15,26 @@ namespace DevFreela.API.Controllers;
 [ApiController]
 public class ProjectsController : ControllerBase
 {
-    private readonly IProjectService _service;
-    public ProjectsController(IProjectService service)
+    private readonly IMediator _mediator;
+    public ProjectsController(IMediator mediator)
     {
-        _service = service;
+        _mediator = mediator;
     }
     
     [HttpGet]
-    public IActionResult Get(string search = "", int page = 0, int size = 3)
+    public async Task<IActionResult> Get(string search = "", int page = 0, int rows = 3)
     {
-        var result = _service.GetAll(search, page, size);
+        GetAllProjectsQuery query = new(search, page, rows);
+        var result = await _mediator.Send(query);
         return Ok(result);
     }
     
     [HttpGet("{id:int}")]
-    public IActionResult GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
-        var result = _service.GetById(id);
+        GetProjectByIdQuery query = new(id);
+        
+        var result = await _mediator.Send(query);
         
         if(!result.IsSuccess)
             return BadRequest(result.Message);
@@ -33,53 +43,56 @@ public class ProjectsController : ControllerBase
     }
     
     [HttpPost]
-    public IActionResult Post(CreateProjectInputModel inputModel)
+    public async Task<IActionResult> Post(InsertProjectCommand command)
     {
-        var result = _service.Insert(inputModel);
-        return CreatedAtAction(nameof(GetById), new { id = result.Data }, inputModel);
+        var result = await _mediator.Send(command);
+        return CreatedAtAction(nameof(GetById), new { id = result.Data }, command);
     }
     
-    [HttpPut("{id:int}")]
-    public IActionResult Put(int id, UpdateProjectInputModel inputModel)
+    [HttpPut]
+    public async Task<IActionResult> Put(UpdateProjectCommand command)
     {
-        inputModel.IdProject = id;
-        var result = _service.Update(inputModel);
+        var result = await _mediator.Send(command);
+
         if (!result.IsSuccess)
             return BadRequest(result.Message);
         return NoContent();
     }
     
     [HttpDelete("{id:int}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        var result = _service.Delete(id);
+        DeleteProjectCommand command = new(id);
+        var result = await _mediator.Send(command);
         if (!result.IsSuccess)
             return BadRequest(result.Message);
         return NoContent();
     }
     
     [HttpPut("{id:int}/start")]
-    public IActionResult Start(int id)
+    public async Task<IActionResult> Start(int id)
     {
-        var result = _service.Start(id);
+        StartProjectCommand command = new(id);
+        var result = await _mediator.Send(command);
         if (!result.IsSuccess)
             return BadRequest(result.Message);
         return NoContent();
     }
     
     [HttpPut("{id:int}/complete")]
-    public IActionResult Complete(int id)
+    public async Task<IActionResult> Complete(int id)
     {
-        var result = _service.Complete(id);
+        CompleteProjectCommand command = new(id);
+        var result = await _mediator.Send(command);
         if (!result.IsSuccess)
             return BadRequest(result.Message);
         return NoContent();
     }
     
-    [HttpPost("{id:int}/comments")]
-    public IActionResult PostComment(int id, CreateProjectCommentInputModel inputModel)
+    [HttpPost("comments")]
+    public async Task<IActionResult> PostComment(InsertCommentCommand command)
     {
-        var result = _service.InsertComment(id, inputModel);
+        var result = await _mediator.Send(command);
         if (!result.IsSuccess)
             return BadRequest(result.Message);
         return NoContent();

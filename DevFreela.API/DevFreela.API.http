@@ -27,14 +27,14 @@ Accept: application/json
 
 ###
 
-PUT {{HostAddress}}/api/Projects/1
+PUT {{HostAddress}}/api/Projects
 Content-Type: application/json
 Accept: application/json
 
 {
   "idProject": 1,
-  "title": "Título Atualizado",
-  "description": "Nova descrição",
+  "title": "Projeto de Desenvolvimento",
+  "description": "Desenvolvimento de um sistema web",
   "totalCost": 6000.0
 }
 
@@ -55,13 +55,13 @@ Accept: application/json
 
 ###
 
-POST {{HostAddress}}/api/Projects/1/comments
+POST {{HostAddress}}/api/Projects/comments
 Content-Type: application/json
 Accept: application/json
 
 {
-  "content": "Muito bom o progresso!",
-  "idUser": 3,
+  "content": "Muito top o progresso!",
+  "idUser": 2,
   "idProject": 1
 }
 
