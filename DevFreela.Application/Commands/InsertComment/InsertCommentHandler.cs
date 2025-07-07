@@ -18,8 +18,8 @@ public class InsertCommentHandler : IRequestHandler<InsertCommentCommand, Result
     
     public async Task<ResultViewModel> Handle(InsertCommentCommand request, CancellationToken cancellationToken)
     {
-        var project = await _repository.Exists(request.IdProject, cancellationToken);
-        if (!project)
+        var exists = await _repository.Exists(request.IdProject, cancellationToken);
+        if (!exists)
             return ResultViewModel.Error("Project not found");
         var projectComment = new ProjectComment(request.Content, request.IdProject, request.IdUser);
         await _repository.AddComment(projectComment, cancellationToken);
