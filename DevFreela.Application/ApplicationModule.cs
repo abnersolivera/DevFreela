@@ -1,4 +1,6 @@
 ﻿using DevFreela.Application.Commands.InsertComment;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DevFreela.Application;
@@ -8,7 +10,8 @@ public static class ApplicationModule
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services
-            .AddHandlers();
+            .AddHandlers()
+            .AddValidation();
         return services;
     }
 
@@ -18,6 +21,14 @@ public static class ApplicationModule
         {
             configuration.RegisterServicesFromAssemblyContaining<InsertCommentCommand>();
         });
+        return services;
+    }
+    
+    public static IServiceCollection AddValidation(this IServiceCollection services)
+    {
+        services
+            .AddFluentValidationAutoValidation()
+            .AddValidatorsFromAssemblyContaining<InsertCommentCommand>();
         return services;
     }
 }
