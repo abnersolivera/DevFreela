@@ -8,12 +8,10 @@ namespace DevFreela.Application.Commands.DeleteProject;
 
 public class DeleteProjectHandler : IRequestHandler<DeleteProjectCommand, ResultViewModel>
 {
-    private readonly DevFreelaDbContext _dbContext;
     private readonly IProjectRepository _repository;
     
-    public DeleteProjectHandler(DevFreelaDbContext dbContext, IProjectRepository repository)
+    public DeleteProjectHandler(IProjectRepository repository)
     {
-        _dbContext = dbContext;
         _repository = repository;
     }
 
