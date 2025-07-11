@@ -1,6 +1,7 @@
 ﻿using DevFreela.Application.Commands.InsertProject;
 using DevFreela.Core.Entities;
 using DevFreela.Core.Repositories;
+using DevFreela.UnitTests.Fakes;
 using FluentAssertions;
 using Moq;
 using NSubstitute;
@@ -17,14 +18,7 @@ public class InsertProjectHandlerTests
         var repository = Substitute.For<IProjectRepository>();
         repository.Add(Arg.Any<Project>(), CancellationToken.None).Returns(Task.FromResult(ID));
         
-        var command = new InsertProjectCommand
-        {
-            Title = "New Project",
-            Description = "Project Description",
-            IdClient = 1,
-            IdFreelancer = 2,
-            TotalCost = 1000.00m
-        };
+        var command = FakeDataHelper.CreateFakeInsertProjectCommand();
         
         var handler = new InsertProjectHandler(repository);
         
@@ -55,14 +49,7 @@ public class InsertProjectHandlerTests
         var repository = Mock
             .Of<IProjectRepository>(r => r.Add(It.IsAny<Project>(), It.IsAny<CancellationToken>()) == Task.FromResult(ID));
         
-        var command = new InsertProjectCommand
-        {
-            Title = "New Project",
-            Description = "Project Description",
-            IdClient = 1,
-            IdFreelancer = 2,
-            TotalCost = 1000.00m
-        };
+        var command = FakeDataHelper.CreateFakeInsertProjectCommand();
         
         var handler = new InsertProjectHandler(repository);
         
