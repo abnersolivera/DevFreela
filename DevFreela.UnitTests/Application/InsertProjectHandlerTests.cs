@@ -1,6 +1,7 @@
 ﻿using DevFreela.Application.Commands.InsertProject;
 using DevFreela.Core.Entities;
 using DevFreela.Core.Repositories;
+using FluentAssertions;
 using Moq;
 using NSubstitute;
 
@@ -33,7 +34,11 @@ public class InsertProjectHandlerTests
 
         // Assert
         Assert.True(result.IsSuccess);
+        
+        result.IsSuccess.Should().BeTrue();
+        
         Assert.Equal(ID, result.Data);
+        result.Data.Should().Be(ID);
         await repository.Received(1).Add(Arg.Any<Project>(), CancellationToken.None);
     }
     
