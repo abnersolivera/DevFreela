@@ -14,7 +14,6 @@ namespace DevFreela.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
 public class ProjectsController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -24,6 +23,7 @@ public class ProjectsController : ControllerBase
     }
     
     [HttpGet]
+    [Authorize(Roles = "client, freelancer")]
     public async Task<IActionResult> Get(string search = "", int page = 0, int rows = 3)
     {
         GetAllProjectsQuery query = new(search, page, rows);
@@ -32,6 +32,7 @@ public class ProjectsController : ControllerBase
     }
     
     [HttpGet("{id:int}")]
+    [Authorize(Roles = "client, freelancer")]
     public async Task<IActionResult> GetById(int id)
     {
         GetProjectByIdQuery query = new(id);
@@ -45,6 +46,7 @@ public class ProjectsController : ControllerBase
     }
     
     [HttpPost]
+    [Authorize(Roles = "client")]
     public async Task<IActionResult> Post(InsertProjectCommand command)
     {
         var result = await _mediator.Send(command);

@@ -1,5 +1,5 @@
 @HostAddress = http://localhost:5000
-@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFibmVyQGVtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImZyZWVsYW5jZXIiLCJleHAiOjE3NTIyOTEzODEsImlzcyI6IkRldkZyZWVsYS5BUEkiLCJhdWQiOiJEZXZGcmVlbGFBcHAifQ.DECkYCHGsxja4XHLX-HaepUMSZsqjSThnuuIoPGmQjA
+@Token = Bearer 
 
 GET {{HostAddress}}/api/Projects
 Authorization: {{Token}}
