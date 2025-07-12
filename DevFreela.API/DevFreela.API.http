@@ -1,14 +1,20 @@
 @HostAddress = http://localhost:5000
+@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFibmVyQGVtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImZyZWVsYW5jZXIiLCJleHAiOjE3NTIyOTEzODEsImlzcyI6IkRldkZyZWVsYS5BUEkiLCJhdWQiOiJEZXZGcmVlbGFBcHAifQ.DECkYCHGsxja4XHLX-HaepUMSZsqjSThnuuIoPGmQjA
 
 GET {{HostAddress}}/api/Projects
+Authorization: {{Token}}
 Accept: application/json
+
 ###
 
 GET {{HostAddress}}/api/Projects?search=Desenvolvimento
+Authorization: {{Token}}
 Accept: application/json
+
 ###
 
 POST {{HostAddress}}/api/Projects
+Authorization: {{Token}}
 Content-Type: application/json
 Accept: application/json
 
@@ -23,11 +29,13 @@ Accept: application/json
 ###
 
 GET {{HostAddress}}/api/Projects/1
+Authorization: {{Token}}
 Accept: application/json
 
 ###
 
 PUT {{HostAddress}}/api/Projects
+Authorization: {{Token}}
 Content-Type: application/json
 Accept: application/json
 
@@ -41,21 +49,25 @@ Accept: application/json
 ###
 
 DELETE {{HostAddress}}/api/Projects/1
+Authorization: {{Token}}
 Accept: application/json
 
 ###
 
 PUT {{HostAddress}}/api/Projects/1/start
+Authorization: {{Token}}
 Accept: application/json
 
 ###
 
 PUT {{HostAddress}}/api/Projects/1/complete
+Authorization: {{Token}}
 Accept: application/json
 
 ###
 
 POST {{HostAddress}}/api/Projects/comments
+Authorization: {{Token}}
 Content-Type: application/json
 Accept: application/json
 
@@ -68,11 +80,13 @@ Accept: application/json
 ###
 
 GET {{HostAddress}}/api/Skills
+Authorization: {{Token}}
 Accept: application/json
 
 ###
 
 POST {{HostAddress}}/api/Skills
+Authorization: {{Token}}
 Content-Type: application/json
 Accept: application/json
 
@@ -83,6 +97,7 @@ Accept: application/json
 ###
 
 GET {{HostAddress}}/api/Users/1
+Authorization: {{Token}}
 Accept: application/json
 
 ###
@@ -94,7 +109,9 @@ Accept: application/json
 {
   "fullName": "Abner Oliveira",
   "email": "abner@email.com",
-  "birthDate": "1997-02-16T00:00:00"
+  "birthDate": "1997-02-16T00:00:00",
+  "password": "123456",
+  "role": "freelancer"
 }
 
 ###
@@ -106,7 +123,9 @@ Accept: application/json
 {
   "fullName": "João Silva Oliveira",
   "email": "joao_ol@email.com",
-  "birthDate": "1990-05-01T00:00:00"
+  "birthDate": "1990-05-01T00:00:00",
+  "password": "123456",
+  "role": "client"
 }
 
 ###
@@ -118,26 +137,63 @@ Accept: application/json
 {
   "fullName": "Stéffany Oliveira",
   "email": "ste@email.com",
-  "birthDate": "1999-02-24T00:00:00"
+  "birthDate": "1999-02-24T00:00:00",
+  "password": "123456",
+  "role": "client"
 }
 
 ###
 
 PUT {{HostAddress}}/api/Users/1/skills
+Authorization: {{Token}}
 Content-Type: application/json
 Accept: application/json
 
 {
   "id": 1,
-  "skillIds": [1]
+  "skillIds": [
+    1
+  ]
 }
 
 ###
 
 PUT {{HostAddress}}/api/Users/1/profile-picture
+Authorization: {{Token}}
 Content-Type: multipart/form-data
 Accept: application/json
 
 (file deve ser enviado como binary)
 
 ###
+
+PUT {{HostAddress}}/api/Users/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "joao_ol@email.com",
+  "password": "123456"
+}
+
+###
+
+PUT {{HostAddress}}/api/Users/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "abner@email.com",
+  "password": "123456"
+}
+
+###
+
+PUT {{HostAddress}}/api/Users/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "ste@email.com",
+  "password": "123456"
+}

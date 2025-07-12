@@ -1,6 +1,8 @@
 ﻿using DevFreela.Application.Models;
 using DevFreela.Infrastructure.Persistence;
 using DevFreela.Core.Entities;
+using DevFreela.Infrastructure.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,13 +10,15 @@ namespace DevFreela.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class UsersController : ControllerBase
 {
     private readonly DevFreelaDbContext _dbContext;
-
-    public UsersController(DevFreelaDbContext dbContext)
+    private readonly IAuthService _authService;
+    public UsersController(DevFreelaDbContext dbContext, IAuthService authService)
     {
         _dbContext = dbContext;
+        _authService = authService;
     }
 
     [HttpGet("{id:int}")]
@@ -24,19 +28,18 @@ public class UsersController : ControllerBase
             .Include(u => u.Skills)
             .ThenInclude(s => s.Skill)
             .SingleOrDefault(u => u.Id == id);
-
         if (user is null)
             return NotFound();
-
         var userViewModel = UserViewModel.FromEntity(user);
-
         return Ok(userViewModel);
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public IActionResult Post(CreateUserInputModel inputModel)
     {
-        var user = new User(inputModel.FullName, inputModel.Email, inputModel.BirthDate, inputModel.Password, inputModel.Role);
+        var hash = _authService.ComputeHash(inputModel.Password);
+        var user = new User(inputModel.FullName, inputModel.Email, inputModel.BirthDate, hash, inputModel.Role);
         _dbContext.Users.Add(user);
         _dbContext.SaveChanges();
         return NoContent();
@@ -48,7 +51,6 @@ public class UsersController : ControllerBase
         var userSkills = inputModel.SkillIds
             .Select(s => new UserSkill(id, s))
             .ToList();
-
         _dbContext.UserSkills.AddRange(userSkills);
         _dbContext.SaveChanges();
         return NoContent();
@@ -62,7 +64,24 @@ public class UsersController : ControllerBase
         {
             return BadRequest("File cannot be empty.");
         }
-
         return Ok(new { Message = "Profile picture updated successfully.", FileName = file.FileName });
+    }
+    
+    [HttpPut("login")]
+    [AllowAnonymous]
+    public IActionResult Login(LoginInputModel inputModel)
+    {
+        var hash = _authService.ComputeHash(inputModel.Password);
+        var user = _dbContext.Users
+            .SingleOrDefault(u => u.Email == inputModel.Email && u.Password == hash);
+        if (user is null)
+        {
+            var error = ResultViewModel<LoginViewModel>.Error("Invalid email or password.");
+            return BadRequest(error);
+        }
+        var token = _authService.GenerateToken(user.Email, user.Role);
+        var viewModel = new LoginViewModel(token);
+        var result = ResultViewModel<LoginViewModel>.Success(viewModel);
+        return Ok(result);
     }
 }

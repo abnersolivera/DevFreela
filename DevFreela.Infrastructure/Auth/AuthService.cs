@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -16,7 +17,13 @@ public class AuthService : IAuthService
     
     public string ComputeHash(string password)
     {
-        throw new NotImplementedException();
+        using var has = SHA256.Create();
+        var passwordBytes = Encoding.UTF8.GetBytes(password);
+        var hashBytes = has.ComputeHash(passwordBytes);
+        var builder = new StringBuilder();
+        foreach (var hashByte in hashBytes)
+            builder.Append(hashByte.ToString("x2"));
+        return builder.ToString();
     }
 
     public string GenerateToken(string email, string role)
