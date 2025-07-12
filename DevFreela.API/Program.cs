@@ -10,6 +10,7 @@ builder.Services
     .AddInfrastructure(builder.Configuration);
 
 builder.Services.AddProblemDetails();
+builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 

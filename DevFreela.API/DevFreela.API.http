@@ -197,3 +197,30 @@ Accept: application/json
   "email": "ste@email.com",
   "password": "123456"
 }
+
+### Request Password Recovery
+POST {{HostAddress}}/users/password-recovery/request
+Content-Type: application/json
+
+{
+  "email": "vabes77746@lhory.com"
+}
+
+### Validate Recovery Code
+POST {{HostAddress}}/users/password-recovery/validate
+Content-Type: application/json
+
+{
+  "email": "xihisa5599@fenxz.com",
+  "code": "467001"
+}
+
+### Change Password
+POST {{HostAddress}}/users/password-recovery/change
+Content-Type: application/json
+
+{
+  "email": "xihisa5599@fenxz.com",
+  "code": "467001",
+  "newPassword": "newStrongPassword123"
+}
